@@ -28,7 +28,7 @@ export async function uploadToOneDrive(fileName: string, content: Uint8Array, mi
     {
       method: "PUT",
       headers: { Authorization: `Bearer `, "Content-Type": mimeType },
-      body: content,
+      body: content as BodyInit,
     }
   );
   if (!res.ok) throw new Error(`Graph : `);
