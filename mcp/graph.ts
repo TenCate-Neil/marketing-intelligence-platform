@@ -1,10 +1,10 @@
-// Microsoft Graph API — OneDrive operations scoped to the shared marketing team folder
+﻿// Microsoft Graph API client — OneDrive file operations for marketing team folder
 
 const GRAPH_BASE = "https://graph.microsoft.com/v1.0";
 
 async function getAccessToken(): Promise<string> {
   const res = await fetch(
-    `https://login.microsoftonline.com/${process.env.AZURE_AD_TENANT_ID}/oauth2/v2.0/token`,
+    `https://login.microsoftonline.com//oauth2/v2.0/token`,
     {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -23,20 +23,23 @@ async function getAccessToken(): Promise<string> {
 export async function uploadToOneDrive(fileName: string, content: Uint8Array, mimeType: string) {
   const token = await getAccessToken();
   const folderId = process.env.ONEDRIVE_FOLDER_ID;
-  const res = await fetch(`${GRAPH_BASE}/drives/${folderId}/root:/${fileName}:/content`, {
-    method: "PUT",
-    headers: { Authorization: `Bearer ${token}`, "Content-Type": mimeType },
-    body: content,
-  });
-  if (!res.ok) throw new Error(`Graph ${res.status}: ${await res.text()}`);
+  const res = await fetch(
+    `/drives//root:/:/content`,
+    {
+      method: "PUT",
+      headers: { Authorization: `Bearer `, "Content-Type": mimeType },
+      body: content,
+    }
+  );
+  if (!res.ok) throw new Error(`Graph : `);
   return res.json();
 }
 
 export async function getOneDriveFileUrl(fileId: string): Promise<string> {
   const token = await getAccessToken();
-  const res = await fetch(`${GRAPH_BASE}/me/drive/items/${fileId}/createLink`, {
+  const res = await fetch(`/me/drive/items//createLink`, {
     method: "POST",
-    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+    headers: { Authorization: `Bearer `, "Content-Type": "application/json" },
     body: JSON.stringify({ type: "view", scope: "organization" }),
   });
   const data = await res.json();
