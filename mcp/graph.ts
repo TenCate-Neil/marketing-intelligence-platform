@@ -20,7 +20,7 @@ async function getAccessToken(): Promise<string> {
   return data.access_token;
 }
 
-export async function uploadToOneDrive(fileName: string, content: Buffer, mimeType: string) {
+export async function uploadToOneDrive(fileName: string, content: Uint8Array, mimeType: string) {
   const token = await getAccessToken();
   const folderId = process.env.ONEDRIVE_FOLDER_ID;
   const res = await fetch(`${GRAPH_BASE}/drives/${folderId}/root:/${fileName}:/content`, {
